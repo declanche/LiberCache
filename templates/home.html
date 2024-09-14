@@ -1,0 +1,170 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block main %}
+
+    <!-- the whole page is a grid -->
+    <!-- in the 2/3 grid each row is a flexbox -->
+    <section class="min-full dashboard">
+        <div class="grid-container">
+            <!-- Library -->
+            <div class="current">
+                <div class="d-flex justify-content-between">
+                    <h5 class="pane-heading pt-1">
+                        Currently Reading
+                    </h5>
+                    <div>
+                        <a href="/library" class="btn btn-secondary">Go To Library</a>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center align-items-center text-center mt-5 mb-2 home-library">
+                    <div class="d-inline-flex">
+                        {% if not user_library %}
+                        <p class="m-5">
+                            You don't have any books in your Library. Add more books <a class="hyperlink" href="/explore"> here</a>
+                        </p>
+                        {% else %}
+
+                        {% for book in user_library %}
+                        <a href="#"><img src="{{book.cover_image}}" type="jpg" alt="{{book.title}}" class="object-cover img-fluid mx-1" style="max-width:170px;"></a>
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+                <hr>
+            </div>
+            
+            <!-- Wishist -->
+            <div class="reading-list">
+                <div class="d-flex align-items-center justify-content-between">
+                    <h6 class="pane-heading right-pane">
+                        Want to Read
+                    </h6>
+                </div>
+                <div class="standard-pane">
+                    {% if not user_wishlist %}
+                    <p class="m-5 text-center">
+                        Your wishlist is empty. <a class="hyperlink" href="/explore">Add items</a>
+                    </p>
+                    {% else %}
+                    <ul>
+                        {% for item in user_wishlist[:3] %}
+                        <li class="py-1">
+                            <div>
+                                <p class="wishlist-item-title">{{ item.title }}</p>
+                                <p class="wishlist-item-author">By {{item.author}}</p>
+                            </div>
+                            <hr>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <div>
+                        <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="offcanvas" data-bs-target="#readingListOffcanvas" aria-controls="readingListOffcanvas">View All</button>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Reading Goals -->
+            <div class="reading-goals">
+                <div class="d-flex justify-content-between">
+                    <h5 class="pane-heading pt-1">
+                        Recommended Books
+                    </h5>
+                    <div>
+                        <a href="/explore" class="btn btn-secondary">Browse</a>
+                    </div>
+                </div>
+
+                <!-- extension from jokes.html here -->
+                <div class="d-flex justify-content-center align-items-center text-center mt-3 mb-2 home-library">
+                    <div class="d-inline-flex">
+                        {% if not recommended %}
+                        <p class="m-3">
+                            No books have been recommended for you.
+                        </p>
+                        {% else %}
+
+                        {% for book in recommended %}
+                        <a href="#"><img src="{{book.cover_image}}" type="jpg" alt="{{book.title}}" class="object-cover img-fluid mx-1" style="max-width:170px;"></a>
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+
+
+            </div>
+
+            <!-- Popular Books -->
+            <div class="popular ">
+                <div class="d-flex align-items-center justify-content-between">
+                    <h6 class="pane-heading right-pane">
+                        Popular This Week
+                    </h6>
+                </div>
+                <div class=" standard-pane" id="popular-pane">
+                    <ul>
+                        <li class="d-flex align-items-center justify-content-around py-2">
+                            <div>
+                                <img src="{{ popular.cover_image }}" type="jpg" class="object-cover" style="max-width:150px; max-height: 150px;">
+                            </div>
+                            <div class="px-3">
+                                <p class="wishlist-item-title">{{ popular.title }}</p>
+                                <p class="wishlist-item-author">By {{ popular.author }}</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+        </div>
+
+        
+    </section>
+    
+    <!-- Offcanvas -->
+    <div class="offcanvas offcanvas-end offcanvas2" data-bs-backdrop="static" tabindex="-1" id="readingListOffcanvas" aria-labelledby="readingListOffcanvasLabel">
+        <div class="offcanvas-header offcanvas2-header">
+            <h5 class="offcanvas-title" id="readingListOffcanvasLabel">Want to Read</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body offcanvas2-body">
+            {% if not user_wishlist %}
+            <p class="m-5 text-center">
+                Your wishlist is empty. <a class="hyperlink" href="/explore">Add items</a>
+            </p>
+            {% else %}
+            <ul>
+                {% for item in user_wishlist %}
+                <li class="py-1">
+                    <div>
+                        <p class="wishlist-item-title">{{ item.title }}</p>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <p class="wishlist-item-author">By {{ item.author }}</p>
+                            <button class="btn btn-sm btn-outline-danger text-sm" id="wishlist-remove-btn" data-title="{{ item.title }}" onclick="confirmRemoveItem('{{ item.title }}')">Remove</button>
+                        </div>
+                    </div>
+                    <hr>
+                </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            <!-- Add more items as needed -->
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // confirms if you want to rmove item from wishlist and runs app route
+        function confirmRemoveItem(bookTitle) {
+            if (confirm(`Are you sure you want to remove "${bookTitle}" from your wishlist?`)) {
+                // Redirect to a URL that triggers the remove-book route
+                window.location.href = `/remove-item/${encodeURIComponent(bookTitle)}`;
+            }
+        }
+    </script>
+
+
+
+{% endblock %}

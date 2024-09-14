@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Apology
+{% endblock %}
+
+{% block main %}
+    <!-- https://memegen.link/ -->
+    <!-- https://knowyourmeme.com/memes/grumpy-cat -->
+    <section class="login min-full form-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md p-3 card form-card">
+                    {% if status %}
+                    <div>
+                        <h4>
+                            You have successfully signed up to LiberCache.<a href="/login">Login to use your account</a>
+                        </h4>
+                    </div>
+                    {% else %}
+                    <div class="apology-img">
+                        <img alt="{{ top }}" class="border img-fluid" src="https://api.memegen.link/images/fry/{{ top | urlencode }}/{{ bottom | urlencode }}.jpg?background=https://i.imgur.com/CsCgN7Ll.png&width" title="{{ top }}">
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

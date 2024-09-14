@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Login
+{% endblock %}
+
+{% block main %}
+
+    <section class="login form-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md p-5 card form-card login-card">
+                    <form class="login-form" action="/login" method="post" id="login-form">
+                        <div>
+                            <a href="/" id="home"><i class="bi bi-house"></i></a>
+                            <h5><b>Login</b></h5>
+                            <p class="text-sm text-muted">If you don't have an account, <a class="hyperlink" href="/signup">sign up.</a></p>
+                        </div>
+                        <div class="mb-3 form-entry">
+                            <label for="usernameInput" class="form-label">Username</label>
+                            <input type="text" class="form-control field-hover" id="usernameInput" name="username" placeholder="Enter your username" autocomplete="off" autofocus>
+                        </div>
+                        <div class="mb-3 form-entry">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control field-hover" id="password" name="password" placeholder="Enter your password" autocomplete="off"></input>
+                        </div>
+                        <hr class="form-end">
+                        <div class="submit-form align-items-center">
+                            <button class="btn sign-up-btn" type="submit">Login</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

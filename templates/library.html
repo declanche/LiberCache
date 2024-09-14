@@ -1,0 +1,331 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Library
+{% endblock %}
+
+{% block main %}
+
+    <section class="min-full library">
+        <div>
+            <div class="page-cover w-100">
+                <div class="text-center page-heading">
+                    Your Library
+                    <!-- <img src="../static/images/your-library.png" alt="Your Library" type="png"> -->
+                </div>
+            </div>
+
+
+            <div class="body">
+                <div class="book-list container">
+
+                    {% if not user_library %}
+                    
+                    <div class="empty-library d-md-flex justify-content-center align-items-center">
+                        <p style="padding: 0; margin: 0;">
+                            You don't have anything in your Library. Add more books <a class="hyperlink" href="/explore"> here</a>
+                        </p>
+                    </div>
+
+                    {% else %}
+
+                    {% for book in user_library %}
+                    <div class="mt-2 mb-5">
+                        <div class="library-grid">
+                            <div class="grid-item book-cover-col">
+                                <div class="book-cover">
+                                    <img src="{{ book.cover_image }}" alt="{{ book.title }}">
+                                </div>
+                            </div>
+                            <div class=" book-info-col">
+                                <div class="book-title text-xl">
+                                    <h3>{{ book.title }}</h3>
+                                </div>
+                                <div class="author-name">
+                                    <p>{{ book.author }}</p>
+                                </div>
+                                <div class="details-block">
+                                    <div class="year-published">
+                                        {% if book.published_year %}
+                                        Published: {{ book.published_year }}
+                                        {% else %}
+                                        Published: n.d
+                                        {% endif %}
+                                    </div>
+                                    <div class="rating">
+                                        {% if book.rating %}
+                                        Rating: {{ book.rating }}/10
+                                        {% else %}
+                                        Rating: Not Provided
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="review">
+                                    <h6>Review:</h6>
+                                    <p class="text-sm">
+                                        {% if book.published_year %}
+                                        {{ book.review }}
+                                        {% else %}
+                                        Not reviewed
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="action-menu-col">
+                                <div class="action-menu">
+
+                                    <div class="reading-progress">
+                                        <!-- try using a grid -->
+                                        <div class="progress">
+                                            <div class="progress-bar custom-progress-bar" role="progressbar" data-progress="{{ book.progress }}"></div>
+                                        </div>
+                                        <div class="progress-percent">
+                                            {{ book.progress }}%
+                                        </div>
+                                    </div>
+
+                                    <div class="date-started px-3">Started: {{ book.date_added }}</div>
+                                    <div class="book-status px-1">Status: {{ book.status }}</div>
+                                    <a href="#">
+                                        <div class="book-status mark-finished px-1"><i class="bi bi-check-circle"></i> mark as finished</div>
+                                    </a>
+                                </div>
+                                <div class="update-progress-btn">
+                                    <a href="#" 
+                                        class="btn btn-sm btn-outline-secondary text-sm" 
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#updateModal" 
+                                        data-title="{{ book.title }}"
+                                        data-author="{{ book.author }}"
+                                        data-status="{{ book.status }}"
+                                        data-progress="{{ book.progress }}"
+                                        data-rating="{{ book.rating }}"
+                                        data-review="{{ book.review }}"
+                                        data-year="{{ book.published_year }}">
+                                        Update Progress
+                                    </a>
+                                </div>
+                                <div class="p-3 remove-book-btn">
+                                    <button class="btn btn-sm btn-outline-danger text-sm" data-title="{{ book.title }}" onclick="confirmRemoveBook('{{ book.title }}')">
+                                        Remove Book
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                    
+                    <span class="add-book d-md-flex justify-content-md-center">
+                        <a href="#" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#addBookModal">Submit New Book</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!--Update Book Progress Modal -->
+        <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="updateProgressLabel">Update Progress</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+    
+                    <div class="modal-body">
+                        <form action="/update-progress" method='POST' enctype="multipart/form-data" id="updateProgressForm">
+                            <!-- title is populated from the script below -->
+                            <div class="mb-3">
+                                <label for="bookTitle" class="form-label">Title</label>
+                                <input type="text" class="form-control" name="title" id="updateTitle" readonly>
+                            </div>
+                            
+                            <!-- reading status which enables or disables progress field -->
+                            <div class="mb-3">
+                                <label for="readingStatus" class="form-label">Status</label>
+                                <select class="form-select field-hover" name="status" id="readingStatus">
+                                    <option value="Not Started" selected>Not Started</option>
+                                    <option value="Currently Reading">Currently Reading</option>
+                                    <option value="Read">Read</option>
+                                  </select>
+                            </div>
+                            
+                            <!-- Progress field -->
+                            <div class="mb-3">
+                                <label for="readingProgress" class="form-label">Progress</label>
+                                <input type="number" name="progress" class="form-control" id="readingProgress">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="bookRating" class="form-label">Rating</label>
+                                <input type="number" name="rating" class="form-control" id="bookRating" placeholder="Not Provided">
+                            </div>
+    
+                            <!-- Add other fields for author, genre, etc. -->
+                            <div class="mb-3">
+                                <label for="BookReviewarea" class="form-label">Book Review</label>
+                                <textarea class="form-control" name="review" id="BookReviewarea" rows="4"></textarea>
+                            </div>                   
+    
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-success">Save Update</button>
+                            </div>
+                        </form>
+                    </div>
+    
+                </div>
+            </div>
+        </div>
+
+        <!--Add Book Modal -->
+        <div class="modal fade" id="addBookModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Add Book</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <form action="/add-book" method='POST' enctype="multipart/form-data" id="addBookForm">
+                        <div class="mb-2 form-entry">
+                            <label for="titleInput" class="modal-form-label">Title</label>
+                            <input type="text" class="form-control field-hover" name="title" id="titleInput" placeholder="Enter Book Title" autocomplete="off" required autofocus>
+                        </div>
+                        <div class="mb-2 form-entry">
+                            <label for="authorInput" class="modal-form-label">Author</label>
+                            <input type="text" class="form-control field-hover" name="author" id="authorInput" placeholder="Author Name" autocomplete="off">
+                        </div>
+                        <div class="mb-2 form-entry">
+                            <label for="genreInput" class="modal-form-label">Genre</label>
+                            <input type="text" class="form-control field-hover" name="genre" id="genreInput" placeholder="Genre" autocomplete="off">
+                        </div>
+                        <div class="mb-2 form-entry">
+                            <label for="yearInput" class="modal-form-label">Year Published</label>
+                            <input type="number" class="form-control field-hover" name="published_year" id="yearInput" placeholder="YYYY" autocomplete="off">
+                        </div>
+                        <div class="mb-3 form-entry">
+                            <label for="genreInput" class="modal-form-label">Book Cover Image</label>
+                            <input type="file" class="form-control field-hover" name="image" accept="image/*">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" data-bs-target="add-book-form" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </form>
+                
+                </div>
+            </div>
+
+        </div>
+
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+
+                // Event listener for the modal when it is shown
+                var addToLibraryModal = document.getElementById('updateModal');
+                addToLibraryModal.addEventListener('show.bs.modal', function(event) {
+                    // Button that triggered the modal
+                    var button = event.relatedTarget;
+
+                    // Extract data attributes from the button
+                    var bookTitle = button.getAttribute('data-title');
+                    var bookStatus = button.getAttribute('data-status');
+                    var bookProgress = button.getAttribute('data-progress');
+                    var bookRating = button.getAttribute('data-rating');
+                    var bookReview = button.getAttribute('data-review');
+
+                    // Update the modal's content with the book details
+                    var modalTitleInput = addToLibraryModal.querySelector('#updateTitle');
+                    modalTitleInput.value = bookTitle;
+
+                    var modalStatusSelect = addToLibraryModal.querySelector('#readingStatus');
+                    modalStatusSelect.value = bookStatus;
+
+                    var modalProgressInput = addToLibraryModal.querySelector('#readingProgress');
+                    modalProgressInput.value = bookProgress;
+
+                    // Disable/enable the progress input based on the current status
+                    modalProgressInput.disabled = (bookStatus !== 'Currently Reading');
+
+                    var modalRatingInput = addToLibraryModal.querySelector('#bookRating');
+                    modalRatingInput.value = bookRating;
+
+                    var modalReviewTextarea = addToLibraryModal.querySelector('#BookReviewarea');
+                    modalReviewTextarea.value = bookReview;
+                });
+
+                // Event listener for changing the status dropdown
+                var modalStatusSelect = document.getElementById('readingStatus');
+                modalStatusSelect.addEventListener('change', function() {
+                    var modalProgressInput = document.getElementById('readingProgress');
+                    modalProgressInput.disabled = (this.value !== 'Currently Reading');
+                });
+
+
+                // script to update progress bar
+                document.querySelectorAll('.progress-bar').forEach(bar => {
+                    bar.style.width = bar.dataset.progress + '%';
+                });
+
+                // script to display message when book is added
+                document.getElementById('addBookForm').addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    var formData = new FormData(this);
+                    
+                    fetch('/add-book', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.text())
+                    .then(data => {
+                        alert(data);  // Display the response message
+                        location.reload();
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('An error occurred during the upload.');
+                        location.reload();
+                    });
+                });
+
+                // script to display message when book progress is updated
+                document.getElementById('updateProgressForm').addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    var formData = new FormData(this);
+                    
+                    fetch('/update-progress', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.text())
+                    .then(data => {
+                        alert(data);  // Display the response message
+                        location.reload();
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('An error occurred during the upload.');
+                        location.reload();
+                    });
+                });
+            });
+        </script>
+
+        <script>
+            function confirmRemoveBook(bookTitle) {
+                if (confirm(`Are you sure you want to remove "${bookTitle}" from your library?`)) {
+                    // Redirect to a URL that triggers the remove-book route
+                    window.location.href = `/remove-book/${encodeURIComponent(bookTitle)}`;
+                }
+            }
+        </script>
+
+    </section>
+
+{% endblock %}

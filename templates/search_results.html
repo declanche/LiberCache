@@ -1,0 +1,28 @@
+{% block div %}
+
+    {% for book in books %}
+    <div class="container book-result pb-4">
+        <div class="row d-flex justify-content-around my-2">
+            <div class="col d-flex align-items-center">
+                <div class="mx-auto" style="width: fit-content;">
+                    <img src="{{ book.cover_image }}" alt="{{ book.title }} cover" style="max-width: 150px;">
+                </div> 
+            </div>
+            <div class="col book-result-dts">
+                <h3 class="title">{{ book.title }}</h3>
+                <p class="author">by {{ book.author }}</p>
+                <p class="other-details">{{ book.genre }} | Published: {{book.published_year}}</p>
+                <div class="d-inline-flex align-items-center">
+                    <div>
+                        <a class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#addToLibrary" data-title="{{ book.title }}">Add to Library</a>
+                    </div>
+                    <div>
+                        <a class="mx-3 btn btn-outline-dark btn-sm" data-title="{{ book.title }}" onclick="confirmAddItem('{{ book.title }}')">Want To Read</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+{% endblock %}

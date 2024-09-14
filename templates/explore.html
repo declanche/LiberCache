@@ -1,0 +1,187 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Explore
+{% endblock %}
+
+
+{% block main %}
+
+<section class="min-full explore">
+    <div>
+        <div class="page-cover w-100" id="explore-page">
+            <div class="text-center page-heading">
+                Explore
+            </div>
+        </div>
+
+        <div class="search">
+            <div class="search-container">
+                <input type="text" name="keyword" id="searchInput" placeholder="Search Books...">
+                <i class="bi bi-search"></i>
+            </div>
+        </div>
+        <!-- TODO: use json to display books in database and try to use jinja to style the output-->
+        <div id="searchResults">{% block div %}{% endblock %}</div>
+        <!-- allow the user to enter the progress of a particular read using a modal and from here will update on their library -->
+
+    
+
+
+    <!-- Library Modal -->
+    <div class="modal fade" id="addToLibrary" tabindex="-1" aria-labelledby="addToLibraryLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addToLibraryLabel">Add Book Your Library</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <form action="/log-book" method='POST' enctype="multipart/form-data" id="LogBookForm">
+
+                        <!-- title is populated from the script below -->
+                        <div class="mb-3">
+                            <label for="bookTitle" class="form-label">Title</label>
+                            <input type="text" class="form-control" name="title" id="bookTitle" readonly>
+                        </div>
+                        
+                        <!-- reading status which enables or disables progress field -->
+                        <div class="mb-3">
+                            <label for="readingStatus" class="form-label">Status</label>
+                            <select class="form-select field-hover" name="status" id="readingStatus">
+                                <option value="not_started" selected>Not Started</option>
+                                <option value="currently_reading">Currently Reading</option>
+                                <option value="read">Read</option>
+                              </select>
+                        </div>
+                        
+                        <!-- Progress field -->
+                        <div class="mb-3">
+                            <label for="readingProgress" class="form-label">Progress</label>
+                            <input type="number" name="progress" class="form-control" id="readingProgress" disabled>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="bookRating" class="form-label">Rating</label>
+                            <input type="number" name="rating" class="form-control" id="bookRating">
+                        </div>
+
+                        <!-- Add other fields for author, genre, etc. -->
+                        <div class="mb-3">
+                            <label for="BookReviewarea" class="form-label">Book Review</label>
+                            <textarea class="form-control" name="review" id="BookReviewarea" rows="4" placeholder="Include whatever you think about this book"></textarea>
+                        </div>                   
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-success">Log Book</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+  
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchInput');
+            const searchResults = document.getElementById('searchResults');
+
+            searchInput.addEventListener('input', function() {
+                const query = this.value;
+                if (query.length >= 2) {
+                    fetchSearchResults(query);
+                } else {
+                    searchResults.innerHTML = '';
+                }
+            });
+
+            function fetchSearchResults(query) {
+                fetch(`/search?q=${encodeURIComponent(query)}`)
+                    .then(response => response.text())
+                    .then(html => {
+                        searchResults.innerHTML = html;
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+
+            // Event listener for the modal when it is shown
+            var addToLibraryModal = document.getElementById('addToLibrary');
+            addToLibraryModal.addEventListener('show.bs.modal', function(event) {
+                // Button that triggered the modal
+                var button = event.relatedTarget;
+                
+                // Extract data attributes from the button
+                var bookTitle = button.getAttribute('data-title');
+                var bookAuthor = button.getAttribute('data-author');
+                var bookGenre = button.getAttribute('data-genre');
+
+                // Update the modal's content with the book details
+                var modalTitleInput = addToLibraryModal.querySelector('#bookTitle');
+                modalTitleInput.value = bookTitle;
+
+                var modalAuthorInput = addToLibraryModal.querySelector('#bookAuthor');
+                modalAuthorInput.value = bookAuthor;
+
+                var modalGenreInput = addToLibraryModal.querySelector('#bookGenre');
+                modalGenreInput.value = bookGenre;
+
+                // Set the reading progress field to be disabled initially
+                var secondField = document.getElementById('readingProgress');
+                secondField.disabled = true;
+            });
+
+            // Event listener to enable/disable the progress field based on the reading status
+            document.getElementById('readingStatus').addEventListener('change', function() {
+                var selectedValue = this.value;
+                var secondField = document.getElementById('readingProgress');
+                
+                if (selectedValue === 'currently_reading') {
+                    // Enable the progress field if 'currently reading' is selected
+                    secondField.disabled = false;
+                } else {
+                    // Disable the progress field for any other option
+                    secondField.disabled = true;
+                }
+            });
+            
+            // listen to when a book is logged and print the resulting method
+            document.getElementById('LogBookForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                var formData = new FormData(this);
+                
+                fetch('/log-book', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.text())
+                .then(data => {
+                    alert(data);  // Display the response message
+                    // location.reload();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred during the upload.');
+                    location.reload();
+                });
+            });
+
+
+        });
+        </script>
+
+        <script>
+            function confirmAddItem(bookTitle) {
+                if (confirm(`Are you sure you want to add "${bookTitle}" to your wishlist?`)) {
+                    // Redirect to a URL that triggers the add-item route
+                    window.location.href = `/add-item/${encodeURIComponent(bookTitle)}`;
+                }
+            }
+        </script>
+</section>
+
+{% endblock %}

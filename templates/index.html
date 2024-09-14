@@ -1,0 +1,126 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Welcome
+{% endblock %}
+
+{% block main %}
+        <section class="min-full">
+            <div class="home d-sm-flex align-items-center justify-content-center p-lg-0 pt-5 text-center text-sm-start">
+                <div class="container home-content px-4">
+                    <h3 class="home-label">Featured Book:</h3>
+                    <h1 class="featured-book">
+                        <b>Same As Ever:A Guide to What Never Changes</b>
+                    </h1>
+                    <h2 class="featured-author">Morgan Housel</h2>
+                    <div class="btn-box">
+                        <a class="btn home-btn" href="/login" id="sign-in">Sign In</a>
+                        <a class="btn home-btn" href="/signup" id="sign-up">Sign Up</a>
+                    </div>
+                </div>
+        
+                <div class="px-6 home-img">
+
+                    <spline-viewer url="https://prod.spline.design/YWTtUGRWcvwBY4kp/scene.splinecode"></spline-viewer>
+                    <!-- <img class="img home-img" src="../static/images/book-cover.png" type="png" alt="beats-headphone"> -->
+                </div>
+            </div>
+        </section>
+
+        <section class="min-full" id="about">
+            <div class="container">
+                <div class="row align-items-center about-feature1">
+                    <div class="col fade-image-container about-img">
+                        <img src="../static/images/great-autumn-reads-for-2017.jpg" type="jpg" alt="Image of Book Grid">
+                    </div>
+                    <div class="col-md p-5">
+                        <h2>What is LiberCache?</h2>
+                        <p class="lead">LiberCache is your personal library, designed to help you achieve your reading goals.</p>
+                        <p>
+                            Our app allows you to: 
+                            <ul>
+                                <li>Track your reading progress across multiple books</li>
+                                <li>Maintain and organize your reading list</li>
+                                <li>Set and monitor reading goals</li>
+                            </ul>
+                            Whether you're a casual reader or a dedicated bibliophile, LiberCache helps you stay organized, motivated, and connected to your reading journey. Start building your literary cache today!
+                        </p>
+                        <a href="/signup" class="btn mt-3">
+                            <i class="bi bi-chevron-right"></i> Get Started</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Questions Accordion-->
+        <section id="questions" class="p-5">
+            <div class="container">
+                <h2 class="text-center mb-4">Frequently Asked Questions</h2>
+                <div class="accordion accordion-flush" id="questions">
+
+                    <!-- item 1 -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#question-one">
+                            What is LiberCache?
+                        </button>
+                        </h2>
+                        <div id="question-one" class="accordion-collapse collapse" data-bs-parent="#questions">
+                            <div class="accordion-body">LiberCache is a web app helps you manage your reading list, track progress across multiple books, and visualize your reading habits.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- item 2 -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#question-two">
+                                How do I start using the app?
+                            </button>
+                        </h2>
+                        <div id="question-two" class="accordion-collapse collapse" data-bs-parent="#questions">
+                            <div class="accordion-body">Simply sign up for an account, add books from our explore section to your library or wishlist, and update your progress as you read. You can also submit new books to be added to our collection of books.
+                            </div>
+                        </div>
+                        </div>
+
+                    <!-- item 3 -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#question-three">
+                                Can I track more than one book at a time?
+                            </button>
+                        </h2>
+                        <div id="question-three" class="accordion-collapse collapse" data-bs-parent="#questions">
+                            <div class="accordion-body">Yes, you can add multiple books to your reading list and track your progress on each one independently.
+                            </div>
+                        </div>
+
+                        <!-- item 4 -->
+                        <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#question-four">
+                                Is this app free to use?
+                            </button>
+                        </h2>
+                        <div id="question-four" class="accordion-collapse collapse" data-bs-parent="#questions">
+                            <div class="accordion-body">Yes, the all features of the app are free to use.</div>
+                        </div>
+                        </div>
+
+                        <!-- item 5 -->
+                        <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#question-five">
+                                How do I contact support if I encounter an issue?
+                            </button>
+                        </h2>
+                        <div id="question-five" class="accordion-collapse collapse" data-bs-parent="#questions">
+                            <div class="accordion-body">If you need assistance, you can reach out to our support team via the contact form on the app or by emailing us directly.</div>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+            </section>
+
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Sign Up
+{% endblock %}
+
+{% block main %}
+
+<!-- big header -->
+    <section class="sign-up min-full form-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md p-5 card form-card">
+                    <form class="register-form" action="/signup" method="post" id="sign-up-form">
+                        <div>
+                            <h5><b>Sign-Up</b></h5>
+                            <p class="text-sm">Fill out this form to register</p>
+                            <p class="text-sm text-muted">If you already have an account, <a class="hyperlink" href="/login">log in instead.</a></p>
+                        </div>
+                        <div class="mb-3 form-entry">
+                            <label for="nameInput" class="form-label">Name</label>
+                            <input type="text" class="form-control field-hover" name="name" id="nameInput" placeholder="Lebron James" autocomplete="off" required autofocus>
+                        </div>
+                        <div class="mb-3 form-entry">
+                            <label for="eMailInput" class="form-label">Email address</label>
+                            <input type="email" class="form-control field-hover" id="eMailInput" name="email" placeholder="name@example.com" autocomplete="off" required>
+                        </div>
+                        <div class="mb-3 form-entry">
+                            <label for="usernameInput" class="form-label">Username</label>
+                            <input type="text" class="form-control field-hover" id="usernameInput" name="username" placeholder="Choose your Username" autocomplete="off" required>
+                        </div>
+                        <div class="mb-3 form-entry">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control field-hover" id="password" name="password" placeholder="Create a Password" required autocomplete="off"></input>
+                        </div>
+                        <div class="mb-3 form-entry">
+                            <label for="password-confirm" class="form-label">Confirm Password</label>
+                            <input type="password" class="form-control field-hover" id="password-confirm" name="password-confirm" placeholder="Confirm Your Password" required autocomplete="off"></input>
+                        </div>
+                        <hr class="form-end">
+                        <div class="submit-form align-items-center">
+                            <button class="btn sign-up-btn" type="submit">Sign-Up</button>
+                        </div>
+                    </form>
+    
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
