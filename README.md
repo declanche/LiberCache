@@ -4,15 +4,17 @@
 ## Introduction
 `LiberCache` is a Flask-based web application that allows users to manage their personal libraries. Users can track books they've read, their progress in currently reading books, add books to their wishlist, and explore new books. The app uses an SQLite database to store book and user data, and provides features such as book logging, progress tracking, and file uploads for book cover images.
 
+#### Video Demo: 
+[CS50 Final Project: Libercache](https://youtu.be/eyr7jGwgNNk)
+
 ## Table of Contents
 - [Introduction](#introduction)
+- [Video Demo](#video-demo-httpsyoutubeeyr7jgwgnnk)
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
 - [Routes](#routes)
-- [Configuration](#configuration)
-- [Dependencies](#dependencies)
-- [Contributing](#contributing)
+- [Acknowledgements](#acknowledgements)
 - [License](#license)
 
 ## Features
@@ -30,16 +32,17 @@ Below are the steps required to get this working on a Windows Subsystem for Linu
 - Python 3.x
 - SQLite
 - Flask
-- CS50 Library
+- CS50 python module
 - Virtual environment (recommended)
 
-### Steps
-1. Clone the repository:
-   ```bash
-   git clone <repository-url>
-   cd <project-directory>
+### Installing SQLite
 
+### Installing Flask
 
+### Installing the CS50 python module
+
+## Usage
+Run flask from the project directory
 
 
 <!-- installation and usage -->
