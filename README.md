@@ -30,6 +30,7 @@ Below are the steps required to get this working on a Windows Subsystem for Linu
 - Python 3.x
 - SQLite
 - Flask
+- CS50 Library
 - Virtual environment (recommended)
 
 ### Steps
