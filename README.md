@@ -11,11 +11,12 @@
 - [Introduction](#introduction)
 - [Video Demo](#video-demo-httpsyoutubeeyr7jgwgnnk)
 - [Features](#features)
-- [Installation](#installation)
+- [Setup & Installation](#setup-&-installation)
 - [Usage](#usage)
-- [Routes](#routes)
+- [Dependencies](#dependencies)
+- [Configuration](#configuration)
+- [Project Structure](#project-structure)
 - [Acknowledgements](#acknowledgements)
-- [License](#license)
 
 ## Features
 - **User Authentication:** Sign up, log in, and manage user sessions.
@@ -25,27 +26,90 @@
 - **Book Statistics:** View reading progress and genre statistics.
 - **Search Functionality:** Search for books by title or author.
 
-## Installation
+## Setup & Installation
 Below are the steps required to get this working on a Windows Subsystem for Linux:
 
 ### Prerequisites
 - Python 3.x
-- SQLite
+- SQLite3
 - Flask
 - CS50 python module
 - Virtual environment (recommended)
 
-### Installing SQLite
-
+### Clone the repo
+```bash
+git clone <repository-url>
+cd libercache
+```
+### Installing SQLite3
+To install SQLite3 run the following command in your WSL Terminal in VSCode
+```bash
+sudo apt install sqlite3
+```
 ### Installing Flask
-
+```bash
+pip3 install flask
+pip3 install flask_session
+```
 ### Installing the CS50 python module
+```bash
+pip install cs50
+```
+### Running the app
+Run the following command from the project directory to get started
+```bash
+flask run
+```
+The app will be available at `http://127.0.0.1:5000`
 
 ## Usage
-Run flask from the project directory
+### Homepage
+- Once logged in, you can view your library and wishlist. You can also see recommendations and popular books.
 
+### Library
+- View all books in your personal library with details like title, author, publication year, rating, and progress.
+- Add new books, update progress, and log ratings.
 
-<!-- installation and usage -->
+### Add Book
+- Use the "Add Book" form to enter the book's details, including uploading an optional cover image.
+
+### Explore
+- Browse through a curated collection of books or use the search functionality to find specific books.
+
+### Wishlist
+- Add books you plan to read to your wishlist and remove them as needed.
+
+### Stats
+- Monitor your reading progress, completed books, and progress toward a predefined goal.
+
+## Dependencies
+
+- [Flask](https://flask.palletsprojects.com/)
+- [Flask-Session](https://pythonhosted.org/Flask-Session/)
+- [Werkzeug](https://werkzeug.palletsprojects.com/)
+- [CS50 Library](https://cs50.readthedocs.io/) (for database interaction)
+
+## Configuration
+
+- **Session Management**: Flask session is configured to use the filesystem with a secret key (`app.config['SECRET_KEY']`).
+- **Database**: The app uses an SQLite database (`libercache.db`), with the `CS50` library handling SQL operations.
+- **File Uploads**: Book cover images are uploaded to the `static/files` directory. Only image files with `.png`, `.jpg`, and `.jpeg` extensions are allowed.
+
+## Project Structure
+```
+libercache/
+├── app.py               # Main Flask application
+├── libercache.db        # SQLite database
+├── requirements.txt     # List of dependencies
+├── static/
+│   └── files/           # Folder for uploaded images
+├── templates/
+│   ├── index.html       # Landing page
+│   ├── home.html        # Dashboard for logged-in users
+│   ├── library.html     # User's personal library
+│   └── ...              # Other HTML templates
+└── README.md            # Project documentation
+```
+
 ## Acknowledgements
 "Low Poly Books" (https://skfb.ly/6YIBB) by BRT_GAMES is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
-## Reference
