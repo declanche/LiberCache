@@ -112,4 +112,9 @@ libercache/
 ```
 
 ## Acknowledgements
-"Low Poly Books" (https://skfb.ly/6YIBB) by BRT_GAMES is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+This project was inspired by and built upon the knowledge gained from [CS50: Introduction to Computer Science](https://cs50.harvard.edu) by David J. Malan.
+Some other helpful resources I used include:
+
+- [Create 3D UI interactions for websites with Spline](https://youtu.be/7vMRRT6nhKI?si=prOHMZDrmC6Z46Tv) by Flux Academy.
+- [Bootstrap 5 Crash Course | Website Build & Deploy](https://youtu.be/4sosXZsdy-s?si=Xc8JzWI4IY4L54yO) by Traversy Media.
+
