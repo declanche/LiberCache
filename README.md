@@ -1,5 +1,4 @@
 # LiberCache
-<!-- put in a picture or logo -->
 
 ## Introduction
 `LiberCache` is a Flask-based web application that allows users to manage their personal libraries. Users can track books they've read, their progress in currently reading books, add books to their wishlist, and explore new books. The app uses an SQLite database to store book and user data, and provides features such as book logging, progress tracking, and file uploads for book cover images.
