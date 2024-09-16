@@ -271,7 +271,7 @@ def search():
         return render_template('search_results.html', books=[])
     
     # Search for books matching the query
-    books = db.execute("SELECT * FROM books WHERE title LIKE ? OR author LIKE ? ORDER BY title LIMIT 15" , f'%{query}%', f'%{query}%')
+    books = db.execute("SELECT * FROM books WHERE title LIKE ? OR author LIKE ? ORDER BY published_year LIMIT 15" , f'%{query}%', f'%{query}%')
 
     if not books:
         return render_template('search_results.html', books=[])
